@@ -1,10 +1,12 @@
 public class BookReport{
 
     public BookReport(){
-        BookDA bookDA = new BookDA();
+        
+        AuthorDA authorDA = new AuthorDA();
+        new BookDA(authorDA);
 
     }
     public static void main(String[] args){
-        new BookDA();
+        new BookReport();
     }
 }

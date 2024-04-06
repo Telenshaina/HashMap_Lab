@@ -3,68 +3,38 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+class BookDA {
+    private HashMap<String, Author> authorMap;
 
-public class BookDA {
-     private HashMap<String, Author> authorMap;
-    // public HashMap<String, Book> getBookMap() {
-    //     return bookMap;
-    // }
-
-
-
-    public BookDA(String name) throws FileNotFoundException{
-
-        try{
-            Scanner bookFile = new Scanner (new FileReader("/workspaces/HashMap_Lab/Book.csv"));
-            authorMap = new HashMap<>();
-
-            while (bookFile.hasNext()){
-                
-                authorMap = new HashMap<>();
-                String bookLineData = new String();
-                bookLineData = bookFile.nextLine();
-
-                String[] bookLineDataSpecific = new String[3];
-                bookLineDataSpecific = bookLineData.split(",");
-
-               
-                Book book = new Book();
-                AuthorDA authorDA = new AuthorDA = new AuthorDA(authorDA(book.get));
-                book.setAuthorMap(AuthorDA.getAuthorMap());
-                if(name.equals(bookLineDataSpecific[2].trim())){
-                   
-                    book.setIsbn(bookLineDataSpecific[0].trim());
-                    book.setTitle(bookLineDataSpecific[1].trim());
-                
-
-                };
-                printReport(book);
-            } bookFile.close();
-        } catch(FileNotFoundException e){
-            throw new RuntimeException(e);
+    public BookDA(AuthorDA authorDA) {
+        authorMap = authorDA.getAuthorMap();
+        try {
+            Scanner bookFile = new Scanner(new FileReader("Book.csv"));
+            while (bookFile.hasNext()) {
+                String bookLineData = bookFile.nextLine();
+                String[] bookLineDataSpecific = bookLineData.split(",");
+                String isbn = bookLineDataSpecific[0].trim();
+                String title = bookLineDataSpecific[1].trim();
+                String authorName = bookLineDataSpecific[2].trim();
+                Author author = authorMap.get(authorName);
+                if (author != null) {
+                    Book book = new Book();
+                    book.setIsbn(isbn);
+                    book.setTitle(title);
+                    book.setAuthor(author);
+                    printReport(book);
+                }
+            }
+            bookFile.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-
-    }
-
-    public BookDA() {
-      
     }
 
     private void printReport(Book book) {
-        System.out.println(book.getIsbn()+" "+ book.getTitle());
-        for (Map.Entry<String, Author> entryMap : book.getAuthorMap().entrySet()) {
-            System.out.println(entryMap.getValue().getName()+" "+ entryMap.getValue().getBio());
-        }
-
+        System.out.println(book.getIsbn() + " " + book.getTitle());
+        Author author = book.getAuthor();
+        System.out.println("\t" + author.getName() + " - " + author.getBio());
         System.out.println();
     }
-
-    
 }
-
-    
-
-
-
-
-
